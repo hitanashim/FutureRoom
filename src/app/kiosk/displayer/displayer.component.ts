@@ -106,8 +106,6 @@ this.startdates=[];
         recentData.push(details[i]);
         recentData.sort((a, b) => (a.startdate > b.startdate) ? 1 : -1);
       }
-
-      
     }
 
     for(var i in recentData)  
