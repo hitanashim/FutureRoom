@@ -17,7 +17,7 @@ export class DisplayerComponent implements OnInit {
   end_time: String;
   start_date: String;
   selectedRoom: Location;
-  title:string;
+  title: string;
   // roomSelected: any[];
   // selectedtime: any;
 
@@ -29,25 +29,25 @@ export class DisplayerComponent implements OnInit {
   @Input() Room;
   public Details;
   public RoomDetails;
-
+  public runtime=100;
 
 
   constructor(private _myService: DetailsService) {
     // this.SelectedLocations();
   }
 
-  runtime: number = 0;
-  interval;
 
-startTimer() {
-    this.interval = setInterval(() => {
-      if(this.runtime > 0) {
-        this.runtime--;
-      } else {
-        this.runtime = 60;
-      }
-    },1000)
-  }
+  //   interval;
+
+  // startTimer() {
+  //     this.interval = setInterval(() => {
+  //       if(this.runtime > 0) {
+  //         this.runtime--;
+  //       } else {
+  //         this.runtime = 10000;
+  //       }
+  //     },1000)
+  //   }
 
   onSubmit() {
     setInterval(() => {
@@ -55,13 +55,15 @@ startTimer() {
     }, 1);
     // console.log(this.bookingModel);
     this.selectedRoom = location;
+    console.log(this.now);
+    // this.Displayer(this.Details);
 
   }
 
   ngOnInit() {
     this.getuniqueLocations();
-   
-   
+
+
   }
 
   getUniqueValues(details) {
@@ -90,10 +92,11 @@ startTimer() {
     this._myService.SelectedInfo(this.selectedRoom).subscribe(
       //read data and assign to public variable students
       data => {
-      this.RoomDetails = this.getRecentData(data);
-      // this.Displayer(data);
 
-      console.log(this.runtime);
+        this.RoomDetails = this.getRecentData(data);
+        console.log(this.runtime);
+
+
       },
       err => console.error(err),
       () => console.log('finished loading')
@@ -101,59 +104,95 @@ startTimer() {
   }
 
   getRecentData(details) {
-    const recentData = []
+    const recentData = [];
+this.startdates=[];
     for (var i in details) {
       var Today = new Date();
       var TodayTime = Today.getTime();
       var x = details[i].startdate;
+      var y = details[i].enddate;
       var Meetingstart = new Date(x).getTime();
+      var Meetingend = new Date(y).getTime();
+
       if (TodayTime < Meetingstart) {
         recentData.push(details[i]);
-
         recentData.sort((a, b) => (a.startdate > b.startdate) ? 1 : -1);
       }
+      // console.log('now ka value:' + this.TodayTime);
+      // console.log('starttime ka value' + Meetingstart);
+
+      // if (this.now.getTime() == Meetingstart) {
+      //   console.log('inside if');
+      //   this.runtime = Meetingend - this.now.getTime();
+      //   this.title = details[i].summary;
+      //   console.log('runtime ka value ' + this.runtime);
+      // }
+      
     }
 
+    for(var i in recentData)  
+    { 
+      var Today = new Date();
+      var TodayTime = Today.getTime();
+      var x = recentData[i].startdate;
+      var y = recentData[i].enddate;
+      var Meetingstart = new Date(x).getTime();
+      var Meetingend = new Date(y).getTime();
+if (TodayTime==Meetingstart && TodayTime<Meetingend){
+    this.runtime = Meetingend - this.now.getTime();
+    this.startdates.push(this.runtime);
+    this.title=recentData[i].summary;
+    return 0;
+}
+    }
     return new Set(recentData);
   }
- 
-  Displayer(details)
-  {
-    
-//     // setTimeout(() => {
-//     //   window.location.reload();
-//     // }, 30000);
-   for (var i in details)
-   {
- if (this.now==details[i].starttime){
-  this.runtime=details[i].endtime-this.now.getTime();
-    this.title=details[i].summary;
- this.startTimer(); 
-   return this.runtime;
- }
-  
-   }
 
-  }
+  // Displayer(details) {
+
+  //   //     // setTimeout(() => {
+  //   //     //   window.location.reload();
+  //   //     // }, 30000);
+  //   console.log('Now ka value ' + this.now);
+  //   console.log('details ka value ' + details);
+  //   for (var i in details) {
+  //     console.log('details ka value --- ' + details);
+  //     if (this.now === details[i].starttime) {
+  //       this.runtime = details[i].endtime - this.now.getTime();
+  //       this.title = details[i].summary;
+
+
+
+  //       console.log(this.title);
+  //       return this.runtime;
+  //     }
+
+  //   }
+
+  // }
 
   onSelect(Room): void {
     this.selectedRoom = Room;
     this.SelectedLocations();
     // this.upcomingMeetings();
+    //this.Displayer(this.Details);
+
   }
 
   getTimeStamp(s) {
     return new Date(s).getTime();
   }
- //method called OnInit
- getDetails() {
-  this._myService.getDetails().subscribe(
-    data => { console.log(data);
-    this.Details = data;},
-    err => console.error(err),
-    () => console.log('finished loading')
-  );
-}
+  //method called OnInit
+  getDetails() {
+    this._myService.getDetails().subscribe(
+      data => {
+        console.log(data);
+        this.Details = data;
+      },
+      err => console.error(err),
+      () => console.log('finished loading')
+    );
+  }
 
 }
 
