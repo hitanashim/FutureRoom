@@ -37,18 +37,6 @@ export class DisplayerComponent implements OnInit {
   }
 
 
-  //   interval;
-
-  // startTimer() {
-  //     this.interval = setInterval(() => {
-  //       if(this.runtime > 0) {
-  //         this.runtime--;
-  //       } else {
-  //         this.runtime = 10000;
-  //       }
-  //     },1000)
-  //   }
-
   onSubmit() {
     setInterval(() => {
       this.now = new Date();
@@ -114,19 +102,11 @@ this.startdates=[];
       var Meetingstart = new Date(x).getTime();
       var Meetingend = new Date(y).getTime();
 
-      if (TodayTime < Meetingstart) {
+      if (TodayTime < Meetingend) {
         recentData.push(details[i]);
         recentData.sort((a, b) => (a.startdate > b.startdate) ? 1 : -1);
       }
-      // console.log('now ka value:' + this.TodayTime);
-      // console.log('starttime ka value' + Meetingstart);
 
-      // if (this.now.getTime() == Meetingstart) {
-      //   console.log('inside if');
-      //   this.runtime = Meetingend - this.now.getTime();
-      //   this.title = details[i].summary;
-      //   console.log('runtime ka value ' + this.runtime);
-      // }
       
     }
 
@@ -138,38 +118,15 @@ this.startdates=[];
       var y = recentData[i].enddate;
       var Meetingstart = new Date(x).getTime();
       var Meetingend = new Date(y).getTime();
-if (TodayTime==Meetingstart && TodayTime<Meetingend){
-    this.runtime = Meetingend - this.now.getTime();
+if (TodayTime==Meetingstart || (TodayTime<Meetingend&&Meetingstart<TodayTime)){
+    this.runtime = Meetingend - Meetingstart-(TodayTime-Meetingstart);
     this.startdates.push(this.runtime);
-    this.title=recentData[i].summary;
-    return 0;
+    this.title=recentData[i].summary;  
 }
     }
     return new Set(recentData);
   }
 
-  // Displayer(details) {
-
-  //   //     // setTimeout(() => {
-  //   //     //   window.location.reload();
-  //   //     // }, 30000);
-  //   console.log('Now ka value ' + this.now);
-  //   console.log('details ka value ' + details);
-  //   for (var i in details) {
-  //     console.log('details ka value --- ' + details);
-  //     if (this.now === details[i].starttime) {
-  //       this.runtime = details[i].endtime - this.now.getTime();
-  //       this.title = details[i].summary;
-
-
-
-  //       console.log(this.title);
-  //       return this.runtime;
-  //     }
-
-  //   }
-
-  // }
 
   onSelect(Room): void {
     this.selectedRoom = Room;
@@ -195,6 +152,52 @@ if (TodayTime==Meetingstart && TodayTime<Meetingend){
   }
 
 }
+
+
+  //   interval;
+
+  // startTimer() {
+  //     this.interval = setInterval(() => {
+  //       if(this.runtime > 0) {
+  //         this.runtime--;
+  //       } else {
+  //         this.runtime = 10000;
+  //       }
+  //     },1000)
+  //   }
+
+  // Displayer(details) {
+
+  //   //     // setTimeout(() => {
+  //   //     //   window.location.reload();
+  //   //     // }, 30000);
+  //   console.log('Now ka value ' + this.now);
+  //   console.log('details ka value ' + details);
+  //   for (var i in details) {
+  //     console.log('details ka value --- ' + details);
+  //     if (this.now === details[i].starttime) {
+  //       this.runtime = details[i].endtime - this.now.getTime();
+  //       this.title = details[i].summary;
+
+
+
+  //       console.log(this.title);
+  //       return this.runtime;
+  //     }
+
+  //   }
+
+  // }
+
+      // console.log('now ka value:' + this.TodayTime);
+      // console.log('starttime ka value' + Meetingstart);
+
+      // if (this.now.getTime() == Meetingstart) {
+      //   console.log('inside if');
+      //   this.runtime = Meetingend - this.now.getTime();
+      //   this.title = details[i].summary;
+      //   console.log('runtime ka value ' + this.runtime);
+      // }
 
 
         //   var filteredData = [];
