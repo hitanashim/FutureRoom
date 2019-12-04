@@ -15,6 +15,7 @@ export class NotificationComponent   {
   //initialize the call using eventService
   
 constructor(public _myService: EventService  ,public __myService:PushNotificationsService) {
+  this.__myService.requestPermission();
    }
 
    ngOnInit() {
@@ -41,7 +42,7 @@ var TodayTime= Today.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
 console.log( "Today Time"+" "+TodayTime);
 
 //Testing - Replace MeetingEndTime with TestTime in the if condition and change the value of td2 to the test value 
-var td2= new Date("2019-12-03T23:21:00-05:00");
+var td2= new Date("2019-12-03T23:27:00-05:00");
 var TestTime = td2.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
 console.log("Meeting Time"+" " +TestTime );
 
@@ -55,6 +56,7 @@ if (TodayTime === TestTime)
                       icon: "assets/img/ntfy.jpg" ,//adding an icon                                       
                            requireInteraction:true               
     }
+    
      this.__myService.create('Meeting', options).subscribe( //creates a notification
         res => console.log(res),
         err => console.log(err)
