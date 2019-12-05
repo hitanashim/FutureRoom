@@ -42,7 +42,7 @@ var TodayTime= Today.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
 console.log( "Today Time"+" "+TodayTime);
 
 //Testing - Replace MeetingEndTime with TestTime in the if condition and change the value of td2 to the test value 
-var td2= new Date("2019-12-03T23:27:00-05:00");
+var td2= new Date("2019-12-04T15:01:00-05:00");
 var TestTime = td2.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
 console.log("Meeting Time"+" " +TestTime );
 
